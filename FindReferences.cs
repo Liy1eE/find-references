@@ -30,7 +30,7 @@ public class FindReferences : EditorWindow
     private Object[] _resultObjects;
     private string[] _files;
     private readonly List<FileData> _fileDatas = new List<FileData>();
-    private readonly List<string> _extensions = new List<string> { ".prefab", ".unity", ".mat", ".asset" };
+    private readonly List<string> _extensions = new List<string> { ".prefab", ".unity", ".mat", ".asset", ".controller" };
     private string _selectedFold = "";
     private bool _isGlobal = true;
     private Vector2 _scrollPos;
