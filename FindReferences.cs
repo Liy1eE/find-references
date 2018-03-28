@@ -93,6 +93,21 @@ public class FindReferences : EditorWindow
             }
         }
 
+        GUILayout.Space(10);
+        if (GUILayout.Button("删除被查找对象"))
+        {
+            if (_resultObjects != null && _resultObjects.Length > 0)
+                Debug.LogError("抱歉，当前对象被其他对象关联，请解除关联后使用！");
+            if (_foundObject == null)
+                Debug.LogError("抱歉，请先选中！");
+
+            string assetPath = AssetDatabase.GetAssetPath(_foundObject);
+            _foundObject = null;
+            File.Delete(Application.dataPath + assetPath.Replace("Assets", ""));
+            AssetDatabase.Refresh();
+            Debug.Log(assetPath + " 已删除");
+        }
+
         GUILayout.Space(30);
         _foundObject = EditorGUILayout.ObjectField("被查找：", _foundObject, typeof(Object), false);
         GUILayout.Space(30);
@@ -109,7 +124,7 @@ public class FindReferences : EditorWindow
 
                 EditorGUILayout.EndScrollView();
             }
-            else
+            else if (_foundObject != null)
                 GUILayout.Label("未找到该资源的引用：" + _foundObject.name);
         }
     }
@@ -152,7 +167,7 @@ public class FindReferences : EditorWindow
     [MenuItem("Window/打开查找引用窗口", false)]
     private static void Init()
     {
-        var window = GetWindow<FindReferences>("查找引用");
+        var window = GetWindow<FindReferences>("查找引用（不用时请关闭该窗口）");
         Selection.selectionChanged = window.Repaint;
     }
 }
